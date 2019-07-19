@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#测试文章"><span class="toc-text">测试文章</span></a></li></ol>
+    
 </div>
     
 </div>
@@ -138,7 +138,28 @@
 </span>
     </div>
     <div class="post-content ">
-        <h1 id="测试文章"><a href="#测试文章" class="headerlink" title="测试文章"></a>测试文章</h1>
+        <blockquote>
+<p>WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.</p>
+</blockquote>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vim <span class="regexp">/etc/</span>sysctl.conf</span><br><span class="line"><span class="comment"># 添加下面代码</span></span><br><span class="line">net.core.somaxconn= <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如何让redis-server 以进程方式启动</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改 redis.conf</span></span><br><span class="line"><span class="string">daemonize</span> <span class="literal">no</span>  <span class="bullet">-&gt;</span>  <span class="string">daemonize</span> <span class="literal">yes</span></span><br><span class="line"><span class="string">$</span> <span class="string">redis-server</span> <span class="string">./你redis的安装目录/redis.conf</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add ‘vm.overcommit_memory = 1’ to /etc/sysctl.conf and then reboot or run the command ‘sysctl vm.overcommit_memory=1’ for this to take effect.</p>
+</blockquote>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>vim /etc/sysctl.conf</span><br><span class="line"><span class="comment"># 添加如下代码后 退出</span></span><br><span class="line">vm.overcommit_memory=<span class="number">1</span></span><br><span class="line"><span class="comment"># 退出后执行操作</span></span><br><span class="line"><span class="variable">$ </span>sysctl -p</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command ‘echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled’ as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.</p>
+</blockquote>
+<blockquote>
+<p>在使用redis-cli连接redis-server后, set 中文, get 中文时显示非汉字,这里redis-cli采用了16进制的显示方法显示了汉字</p>
+</blockquote>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli <span class="comment">--raw</span></span><br></pre></td></tr></table></figure>
         
         <br />
         <div id="comment-container">
