@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <title>Redis Notes | Hexo</title>
+  <meta name="keywords" content>
+  <meta name="description" content="Redis Notes | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="Redis 学习笔记 什么是队列? 什么是栈?  队列是先进先出, 栈是先进后出.   原子操作:  指将一系列的操作看作成一个整体,不可中断,开始执行到结束.   MySQL 与 NoSQL 的区别?  MySQL是关系型数据库, NoSQL是非关系型数据库 存储方式不同: MySQL数据存在特定结构的表中;NoSQL可以存在json文档中,hash表中或其它方式 数据关系不同:MySQL必须建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis Notes">
+<meta property="og:url" content="Frankie Tec-knowledge/2019/07/19/Redis-Notes/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Redis 学习笔记 什么是队列? 什么是栈?  队列是先进先出, 栈是先进后出.   原子操作:  指将一系列的操作看作成一个整体,不可中断,开始执行到结束.   MySQL 与 NoSQL 的区别?  MySQL是关系型数据库, NoSQL是非关系型数据库 存储方式不同: MySQL数据存在特定结构的表中;NoSQL可以存在json文档中,hash表中或其它方式 数据关系不同:MySQL必须建">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-19T12:55:14.688Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis Notes">
+<meta name="twitter:description" content="Redis 学习笔记 什么是队列? 什么是栈?  队列是先进先出, 栈是先进后出.   原子操作:  指将一系列的操作看作成一个整体,不可中断,开始执行到结束.   MySQL 与 NoSQL 的区别?  MySQL是关系型数据库, NoSQL是非关系型数据库 存储方式不同: MySQL数据存在特定结构的表中;NoSQL可以存在json文档中,hash表中或其它方式 数据关系不同:MySQL必须建">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1"></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+<script src="/js/iconfont.js?v=1"></script>
+
+</head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value>
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>John Doe</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/yelog" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="facebook" href="https://www.facebook.com/faker.tops" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-facebook"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+        <a title="instagram" href="https://www.facebook.com/faker.tops" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-instagram"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="reddit" href="https://www.reddit.com/user/yelog/" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-reddit"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="weibo" href="http://weibo.com/u/2307534817" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-weibo"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="jianshu" href="https://www.jianshu.com/u/ff56736de7cf" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-jianshu"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="zhihu" href="https://www.zhihu.com/people/jaytp/activities" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-zhihu"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="oschina" href="https://my.oschina.net/yelog" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-oschina"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:jaytp@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=872336115&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="kugou" href="https://www.kugou.com/" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-kugou"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="neteasemusic" href="https://music.163.com/#/user/home?id=88151013" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-neteasemusic"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(2)</small></div></li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a style="border-right: 1px solid #fff; width: 49%"  class="about site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="2">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class=""
+           href="/2019/07/19/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2019-07-19 20:42:01">2019/07/19</span>
+        </a>
+        
+        <a  class=""
+           href="/2019/07/19/Redis-Notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis Notes">Redis Notes</span>
+            <span class="post-date" title="2019-07-19 20:54:38">2019/07/19</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-Redis-Notes" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Redis Notes</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-07-19 20:55:14'>2019-07-19 20:54</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-学习笔记"><span class="toc-text">Redis 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-的增删改查"><span class="toc-text">Redis 的增删改查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis常用数据类型"><span class="toc-text">Redis常用数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#string-类型数据常用命令"><span class="toc-text">string 类型数据常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis中list类型及操作"><span class="toc-text">Redis中list类型及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis中hash类型及操作"><span class="toc-text">Redis中hash类型及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis中sets类型及操作"><span class="toc-text">Redis中sets类型及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis中zsets类型及操作"><span class="toc-text">Redis中zsets类型及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis中常用命令及操作"><span class="toc-text">Redis中常用命令及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis中的订阅-发布"><span class="toc-text">Redis中的订阅/发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis服务器的相关命令"><span class="toc-text">Redis服务器的相关命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis主从复制实现"><span class="toc-text">Redis主从复制实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#跨IP连接Redis-server"><span class="toc-text">跨IP连接Redis-server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis哨兵的创建与实现"><span class="toc-text">Redis哨兵的创建与实现</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis-学习笔记"><a href="#Redis-学习笔记" class="headerlink" title="Redis 学习笔记"></a>Redis 学习笔记</h1><ul>
+<li><p>什么是队列? 什么是栈?</p>
+<ul>
+<li>队列是先进先出, 栈是先进后出.</li>
+</ul>
+</li>
+<li><p>原子操作:</p>
+<ul>
+<li>指将一系列的操作看作成一个整体,不可中断,开始执行到结束.</li>
+</ul>
+</li>
+<li><p>MySQL 与 NoSQL 的区别?</p>
+<ul>
+<li>MySQL是关系型数据库, NoSQL是非关系型数据库</li>
+<li>存储方式不同: MySQL数据存在特定结构的表中;NoSQL可以存在json文档中,hash表中或其它方式</li>
+<li>数据关系不同:MySQL必须建立好表,确定关系,才能存储数据;而在NoSQL中,不限时间不限地点都可以进行数据存储</li>
+<li>外部存储数据:SQL中增加外部数据时,是在原表中增加外键,关联外部数据;而NoSQL则可以集中放置数据.</li>
+<li>JOIN查询:MySQL使用join做集合查询,而NoSQL没有提供这种交集查询方式.</li>
+<li>事务处理:MySQL多张表同批次进行数据操作,就是通过事务处理的,其中一张表失败,其它表更新也会失败.NoSQL没有事务概念.</li>
+</ul>
+</li>
+<li><p>NoSQL优势:</p>
+<ul>
+<li>灵活的可扩展性</li>
+<li>维护成本低</li>
+<li>大数据的处理能力</li>
+<li>灵活的数据类型</li>
+<li>数据存储的成本低,通过商业服务器集群管理膨胀的数据</li>
+</ul>
+</li>
+<li><p>NoSQL劣势:</p>
+<ul>
+<li>单产品成熟度不够</li>
+<li>后续技术支持后劲不足</li>
+<li>分析能力和商业智能化血线淡泊</li>
+<li>缺乏高精尖专业人才</li>
+</ul>
+</li>
+</ul>
+<h2 id="Redis-的增删改查"><a href="#Redis-的增删改查" class="headerlink" title="Redis 的增删改查"></a>Redis 的增删改查</h2><blockquote>
+<p>常用命令</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set key     插入数据</span><br><span class="line">get key     查询数据</span><br><span class="line">del key     删除数据</span><br><span class="line">getset key  修改数据</span><br><span class="line">exists key  验证key是否存在</span><br></pre></td></tr></table></figure>
+
+<h2 id="Redis常用数据类型"><a href="#Redis常用数据类型" class="headerlink" title="Redis常用数据类型"></a>Redis常用数据类型</h2><blockquote>
+<p>string 类型</p>
+</blockquote>
+<p>是Redis中二进制、最简单的key-value类型,最大数据上限1G.</p>
+<h2 id="string-类型数据常用命令"><a href="#string-类型数据常用命令" class="headerlink" title="string 类型数据常用命令"></a>string 类型数据常用命令</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">set</td>
+<td align="left">set key value</td>
+<td align="left">设置指定key的值</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">get</td>
+<td align="left">get key</td>
+<td align="left">获取指定key的值</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">getrange</td>
+<td align="left">getrange key start end</td>
+<td align="left">返回key中字符串的子字符(下标从0开始)</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">getset</td>
+<td align="left">getset key value</td>
+<td align="left">修改指定key的值,并返回key的旧值</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">getbit</td>
+<td align="left">getbit key offset</td>
+<td align="left">对key所储存的字符串值, 获取指定偏移量上的位(bit)</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">mget</td>
+<td align="left">mget key1 key2</td>
+<td align="left">获取一个或多个给定key的值</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">setbit</td>
+<td align="left">setbit key offset value</td>
+<td align="left">对key所储存的字符串值,设置或清除指定偏移量上的位(bit)</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">setex</td>
+<td align="left">setex key seconds value</td>
+<td align="left">将值value关联到key,并将key的过期时间设为seconds(以秒为单位)</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">setnx</td>
+<td align="left">setnx key value</td>
+<td align="left">只有在key不存在时设置key的值为value</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">setrange</td>
+<td align="left">setrange key offset value</td>
+<td align="left">用value参数覆写给定key所储存的字符串值,从偏移量offset开始</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">strlen</td>
+<td align="left">strlen key</td>
+<td align="left">返回key所储存的字符串值的长度</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">mset</td>
+<td align="left">mset key value [key value]</td>
+<td align="left">同时设置一个或多个key-value对</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="center">msetnx</td>
+<td align="left">msetnx key value[key value]</td>
+<td align="left">同时设置一个或多个key-value对,当且仅当所有给定key都不存在</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="center">psetex</td>
+<td align="left">psetex key milliseconds value</td>
+<td align="left">这个命令和 setex 命令相似,但它以毫秒为单位设置key的生存时间</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="center">incr</td>
+<td align="left">incr key</td>
+<td align="left">将key中储存的数字值 +1</td>
+</tr>
+<tr>
+<td align="center">16</td>
+<td align="center">incrby</td>
+<td align="left">incrby key increment</td>
+<td align="left">将key所储存的值加上给定的增量值</td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="center">incrbyfloat</td>
+<td align="left">incrbyfloat key increment</td>
+<td align="left">将key所储存的值加上给定的浮点增量值</td>
+</tr>
+<tr>
+<td align="center">18</td>
+<td align="center">decr</td>
+<td align="left">decr key</td>
+<td align="left">将key中储存的数字值 -1</td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="center">decyby</td>
+<td align="left">decrby key decrement</td>
+<td align="left">key所储存的值减去给定的减量值</td>
+</tr>
+<tr>
+<td align="center">20</td>
+<td align="center">append</td>
+<td align="left">append key value</td>
+<td align="left">如果key已经存在并且是一个字符串,将value追加到key值的末尾</td>
+</tr>
+</tbody></table>
+<h2 id="Redis中list类型及操作"><a href="#Redis中list类型及操作" class="headerlink" title="Redis中list类型及操作"></a>Redis中list类型及操作</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">lpush</td>
+<td align="left">lpush key value</td>
+<td align="left">将一个或多个值插入到已存在的列表头部</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">rpush</td>
+<td align="left">rpush key value</td>
+<td align="left">将一个或多个值插入到已存在的列表尾部</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">linsert</td>
+<td align="left">linsert key before/after pivot value</td>
+<td align="left">在列表的元素前或后插入元素</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">lset</td>
+<td align="left">lset key index value</td>
+<td align="left">通过索引设置列表元素的值</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">lrem</td>
+<td align="left">lrem key count value</td>
+<td align="left">移除列表元素</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">ltrim</td>
+<td align="left">ltrim key start stop</td>
+<td align="left">对一个列表进行修剪(trim), 列表保留指定区域内的元素</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">lrange</td>
+<td align="left">lrange key start stop</td>
+<td align="left">获取列表中的某一片段</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">lpop</td>
+<td align="left">lpop key</td>
+<td align="left">移出并获取列表的第一个元素</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">rpop</td>
+<td align="left">rpop key</td>
+<td align="left">移出兵获取列表的最后一个元素</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">rpoplpush</td>
+<td align="left">rpoplpush source destination</td>
+<td align="left">移除列表的最后一个元素,并将该元素添加到另外一个列表并返回</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">lindex</td>
+<td align="left">lindex key index</td>
+<td align="left">通过索引获取列表的元素</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">llen</td>
+<td align="left">llen key</td>
+<td align="left">获取列表长度</td>
+</tr>
+</tbody></table>
+<h2 id="Redis中hash类型及操作"><a href="#Redis中hash类型及操作" class="headerlink" title="Redis中hash类型及操作"></a>Redis中hash类型及操作</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">hset</td>
+<td align="left">hset key field value</td>
+<td align="left">将哈希表中key中字段field的值设为value</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">hget</td>
+<td align="left">hget key field</td>
+<td align="left">获取储存在哈希表中指定字段的值</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">hmget</td>
+<td align="left">hmget key field1 … fieldN</td>
+<td align="left">获取所有给定字段的值</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">hmset</td>
+<td align="left">hmset key field1 value1 … fieldN valueN</td>
+<td align="left">同时设置到哈希表中多个field</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">hincrby</td>
+<td align="left">hincrby key filed increment</td>
+<td align="left">为哈希表key中指定字段加上给定值</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">hexists</td>
+<td align="left">hexists key field</td>
+<td align="left">查看哈希表key中是否存在filed字段</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">hdel</td>
+<td align="left">hdel key field</td>
+<td align="left">删除一个或多个哈希字段</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">hlen</td>
+<td align="left">hlen key</td>
+<td align="left">获取哈希表中字段的数量</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">hkeys</td>
+<td align="left">hkeys key</td>
+<td align="left">获取哈希表中所有字段</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">hvals</td>
+<td align="left">hvals key</td>
+<td align="left">获取哈希表中所有的值</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">hgetall</td>
+<td align="left">hgetall key</td>
+<td align="left">获取哈希表中指定key的所有字段和值</td>
+</tr>
+</tbody></table>
+<h2 id="Redis中sets类型及操作"><a href="#Redis中sets类型及操作" class="headerlink" title="Redis中sets类型及操作"></a>Redis中sets类型及操作</h2><p>数学中的集合,对集合进行添加,删除以及获取交集差集等操作.</p>
+<table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">sadd</td>
+<td align="left">sadd key member1[ member2]</td>
+<td align="left">向集合中添加一个或者多个元素</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">srem</td>
+<td align="left">srem key member1[ member2]</td>
+<td align="left">移除集合中一个或者多个元素</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">smembers</td>
+<td align="left">smembers key</td>
+<td align="left">返回集合中所有元素</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">spop</td>
+<td align="left">spop key</td>
+<td align="left">移除并返回集合中的一个随机元素</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">sdiff</td>
+<td align="left">sdiff key1[key2]</td>
+<td align="left">返回key2中没有key1的所有元素差集</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">sdiffstore</td>
+<td align="left">sdiffstore destination key1 key2</td>
+<td align="left">返回给定所有集合的差集兵存储在destination中</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">sinter</td>
+<td align="left">sinter key1 key2</td>
+<td align="left">返回给定所有集合的交集</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">sinterstore</td>
+<td align="left">sinterstore destination key1 key2</td>
+<td align="left">返回给定所有集合的交集并存储在destination中</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">sunion</td>
+<td align="left">sunion key1 key2</td>
+<td align="left">返回给定所有集合的并集</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">sunionstore</td>
+<td align="left">sunionstore destination key1 key2</td>
+<td align="left">返回所有给定集合的并集 存储在destination中</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">smove</td>
+<td align="left">smove source destination member</td>
+<td align="left">将member元素从source集合移动到destination集合</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">scard</td>
+<td align="left">scard key member</td>
+<td align="left">获取集合成员数</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="center">sismember</td>
+<td align="left">sismember key member</td>
+<td align="left">判断member元素是否是集合key的成员</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="center">srandmember</td>
+<td align="left">srandmember key[count]</td>
+<td align="left">返回集合中一个或多个随机数</td>
+</tr>
+</tbody></table>
+<h2 id="Redis中zsets类型及操作"><a href="#Redis中zsets类型及操作" class="headerlink" title="Redis中zsets类型及操作"></a>Redis中zsets类型及操作</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">zadd</td>
+<td align="left">zadd key score1 member</td>
+<td align="left">添加member元素到集合key, 若元素在集合中存在,则更新对应的score</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">zrem</td>
+<td align="left">zrem key member</td>
+<td align="left">删除指定元素,1表示成功,如果元素不存在则返回0</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">zincrby</td>
+<td align="left">zincby key incr member</td>
+<td align="left">有序集合中对指定成员的score增加对应增量,返回更新后的score值</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">zrank</td>
+<td align="left">zrank key member</td>
+<td align="left">返回有序集合中指定成员的索引</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">zrevrank</td>
+<td align="left">zrevrank key member</td>
+<td align="left">返回有序集合中指定成员的排名,有序集合成员按分数值递减排序</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">zrange</td>
+<td align="left">zrange key start end</td>
+<td align="left">通过索引区间返回有序集合成指定区域内的成员</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">zrevrange</td>
+<td align="left">zrevrange key start end</td>
+<td align="left">返回集合中指定区间内的成员,通过索引,分数从高到低</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">zrangebyscore</td>
+<td align="left">zrangebyscore key min max</td>
+<td align="left">通过分数返回有序集合指定区间内的成员</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">zcount</td>
+<td align="left">zcount key min max</td>
+<td align="left">计算在有序集合中指定区间分数的成员数</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">zcard</td>
+<td align="left">zcard key</td>
+<td align="left">获取有序集合的成员数</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">zscore</td>
+<td align="left">zscore key element</td>
+<td align="left">返回有序集合中,成员的分数值</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">zremrangebyrank</td>
+<td align="left">zremrangebyrank key min max</td>
+<td align="left">移除有序集合中给定的排名区间的所有成员</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="center">zremrangebyscore</td>
+<td align="left">zremrangebyscore key min max</td>
+<td align="left">移除有序集合中给定的分数区间的所有成员</td>
+</tr>
+</tbody></table>
+<h2 id="Redis中常用命令及操作"><a href="#Redis中常用命令及操作" class="headerlink" title="Redis中常用命令及操作"></a>Redis中常用命令及操作</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">keys</td>
+<td align="left">keys pattern</td>
+<td align="left">返回符合给定要求的所有key</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">exists</td>
+<td align="left">exists key</td>
+<td align="left">判断key是否存在</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">del</td>
+<td align="left">del key</td>
+<td align="left">删除一个key</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">expire</td>
+<td align="left">expire key seconds</td>
+<td align="left">设置一个key的过期时间, 单位:秒</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">move</td>
+<td align="left">move key db</td>
+<td align="left">当前key 移到其它db数据库中</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">persist</td>
+<td align="left">persist key</td>
+<td align="left">移除key的过期时间</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">randomkey</td>
+<td align="left">randomkey -</td>
+<td align="left">随机返回key空间的一个key</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">rename</td>
+<td align="left">rename key</td>
+<td align="left">重命名key</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">type</td>
+<td align="left">type key</td>
+<td align="left">返回key所对应value的类型</td>
+</tr>
+</tbody></table>
+<h2 id="Redis中的订阅-发布"><a href="#Redis中的订阅-发布" class="headerlink" title="Redis中的订阅/发布"></a>Redis中的订阅/发布</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">subscribe</td>
+<td align="left">subscribe channel</td>
+<td align="left">订阅给定的一个或多个频道的信息</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">publish</td>
+<td align="left">publish channel message</td>
+<td align="left">将信息发送给指定的频道 channel</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">psubscribe</td>
+<td align="left">psubscribe pattern</td>
+<td align="left">订阅一个或多个符合给定模式的频道</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">pubsub</td>
+<td align="left">pubsub subcommand</td>
+<td align="left">查看订阅与发布系统状态</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">punsubscribe</td>
+<td align="left">punsubscrib pattern</td>
+<td align="left">退出所有给定模式的频道</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">unsubscribe</td>
+<td align="left">unsubscribe channel</td>
+<td align="left">退出给定的频道</td>
+</tr>
+</tbody></table>
+<h2 id="Redis服务器的相关命令"><a href="#Redis服务器的相关命令" class="headerlink" title="Redis服务器的相关命令"></a>Redis服务器的相关命令</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">命令</th>
+<th align="left">格式</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">ping</td>
+<td align="left">ping [message]</td>
+<td align="left">测试连接是否存活</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">echo</td>
+<td align="left">echo message</td>
+<td align="left">在命令行打印一些内容</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">select</td>
+<td align="left">select index</td>
+<td align="left">选择数据库</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">quit</td>
+<td align="left">quit</td>
+<td align="left">退出连接</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">dbsize</td>
+<td align="left">dbsize</td>
+<td align="left">返回当前数据库中key的数目</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">info</td>
+<td align="left">info section</td>
+<td align="left">获取服务器的信息和统计</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">config get</td>
+<td align="left">config get</td>
+<td align="left">获取服务器配置信息</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">flushdb</td>
+<td align="left">flushdb</td>
+<td align="left">删除当前选择数据库中的所有key</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">flushall</td>
+<td align="left">flushall</td>
+<td align="left">删除所有数据库中的所有key</td>
+</tr>
+</tbody></table>
+<h1 id="Redis主从复制实现"><a href="#Redis主从复制实现" class="headerlink" title="Redis主从复制实现"></a>Redis主从复制实现</h1><ol>
+<li>首先创建 6380 6381两个文件夹,复制<code>redis.conf</code>至目录下,并修改配置文件端口号与文件夹一致</li>
+<li>开启服务 <code>redis-server ./6380/redis.conf</code>、<code>redis-server ./6381/redis.conf</code></li>
+<li>创建实例连接服务端<code>redis-cli -p 6380</code>、<code>redis-cli -p 6381</code></li>
+<li>在<code>6380</code>端口数据库中使用 <code>slaveof 127.0.0.1 6381</code> 配置主从</li>
+</ol>
+<p>返回 <code>ok</code> 后 在<code>6380</code>端口客户端执行 <code>info replication</code>查看信息(我本地是windows测试)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">E:\&gt;\soft\redis\redis-cli -p 6380</span><br><span class="line">127.0.0.1:6380&gt; info replication</span><br><span class="line"># Replication</span><br><span class="line">role:slave # 当前角色 slave 代表从数据库</span><br><span class="line">master_host:127.0.0.1   # 主数据库IP</span><br><span class="line">master_port:6381        # 主数据库端口</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:7</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_repl_offset:141</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_repl_offset:0</span><br><span class="line">repl_backlog_active:0</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:0</span><br><span class="line">repl_backlog_histlen:0</span><br><span class="line">127.0.0.1:6380&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>6381</code>端口客户端执行 <code>info replication</code> 查看信息(本地windows)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">E:\&gt;\soft\redis\redis-cli -p 6381</span><br><span class="line">127.0.0.1:6381&gt; info replication</span><br><span class="line"># Replication</span><br><span class="line">role:master # 当前角色 master 代表主数据库</span><br><span class="line">connected_slaves:1 # 已连接从数据库数量</span><br><span class="line">slave0:ip=127.0.0.1,port=6380,state=online,offset=281,lag=0</span><br><span class="line">master_repl_offset:281</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:280</span><br><span class="line">127.0.0.1:6381&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>停止端口号为<code>6381</code>的redis服务器(模拟<code>6381</code>主服务器出现问题无法使用等情况)</li>
+<li>开启端口号为<code>6381</code>的redis服务器,并设定<code>6381</code>端口数据库为端口号<code>6380</code>数据库的从库<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server --port 6380 --slaveof 127.0.0.1 6381</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>连接端口号为<code>6381</code>的redis客户端,使用<code>info replication</code>命令查询状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6381&gt; info replication</span><br><span class="line"># Replication</span><br><span class="line">role:master</span><br><span class="line">connected_slaves:1</span><br><span class="line">slave0:ip=127.0.0.1,port=6380,state=online,offset=281,lag=0</span><br><span class="line">master_repl_offset:281</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:280</span><br><span class="line">127.0.0.1:6381&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>权限认证</p>
+</blockquote>
+<p>为了安全,通常<code>master</code>主库配置文件中会使用<code>requirepass</code>,而在<code>slave</code>从库中要做<code>masterauth</code>权限认证</p>
+<h2 id="跨IP连接Redis-server"><a href="#跨IP连接Redis-server" class="headerlink" title="跨IP连接Redis-server"></a>跨IP连接Redis-server</h2><p>以IP为<code>192.168.44.130</code>作为<code>Redis-sever</code>,以<code>192.168.44.128</code>作为<code>Redis-cli</code>连接</p>
+<p>修改<code>Redis-server</code>配置文件,保证<code>protected-mode</code>值为<code>yes</code>,查找<code>bind</code> 注释掉<code>bind 127.0.0.1</code></p>
+<p>查找 <code>requirepass</code>, 在下方写入(注意密码复杂度)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requirepass myPass</span><br></pre></td></tr></table></figure>
+
+<p>保存退出</p>
+<p>在IP为<code>192.168.44.128</code>客户端上输入一下命令尝试连接<code>Reids-server</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 连接Redis-server</span><br><span class="line">redis-cli -h 192.168.44.130 -p 6379</span><br><span class="line">AUTH myPass</span><br></pre></td></tr></table></figure>
+
+<h2 id="Redis哨兵的创建与实现"><a href="#Redis哨兵的创建与实现" class="headerlink" title="Redis哨兵的创建与实现"></a>Redis哨兵的创建与实现</h2><p>建立哨兵方式 1:</p>
+<blockquote>
+<p>redis-sentinel /path/to/sentinel.conf</p>
+</blockquote>
+<p>建立哨兵方式 2:</p>
+<blockquote>
+<p>redis-server /path/to/sentinel.conf –sentinel</p>
+</blockquote>
+<p><code>Sentinel</code>的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 60000</span><br></pre></td></tr></table></figure>
+
+<p>解析:</p>
+<blockquote>
+<p>其中<code>mymaster</code>表示要监控的主数据库的名字,后两个参数表示主数据库的地址和端口号,这里我们要监控的是主数据库6379, 最后的<code>2</code>表示最低通过票数,当集群中有2个哨兵认为<code>mymaster</code>挂掉时,才能真正认为该master已经不可用了.而<code>down-after-milliseconds</code>表示每隔一定时间(单位:毫秒)发送一个<code>ping</code>命令,请求Server响应,来判断主数据库是否可用</p>
+</blockquote>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a href="javascript:void(0)" class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>Redis Notes</p>
+    
+    <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="John Doe">John Doe</a></p>
+    <p><span class="copy-title">发布时间:</span>2019-07-19, 20:54:38</p>
+    <p><span class="copy-title">最后更新:</span>2019-07-19, 20:55:14</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/07/19/Redis-Notes/" title="Redis Notes">Frankie Tec-knowledge/2019/07/19/Redis-Notes/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2016-2019 Yelog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" href="javascript:void(0)"></a>
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="//cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+
+<script src="/js/script.js?v=1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': [],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+    .post .pjax article blockquote {
+        padding: 10px 20px;
+        background-color: white;
+        border: none;
+        border-left: 4px solid #42b983;
+        border-right: 4px solid #42b983;
+        border-radius: 10px;
+    }
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        background: url("http://img.xiangzhangshugongyi.com/FlSExUGfRSaqxkK5v42CpuI-tXAL.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
