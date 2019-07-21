@@ -190,8 +190,10 @@
 
 <p>生成的归档文件的相对目录就是 <code>github.com/labstack</code> 文件名为 <code>echo.a</code></p>
 <blockquote>
-<p>扩展: 代码包的另外一层含义: 该代码包的源码文件存在于 Github.com 网站的 labstack(User) 组的代码仓库 echo(Property) 中.<br>归档文件的相对目录与pkg目录之间还有一级目录, 叫做平台相关目录. 平台相关目录的名称是由 <code>build</code> (也称”构建”)的目标操作系统、下划线和目标计算架构的代号组成的。<br>比如,构建某个代码包时的目标系统是Linux,目标计算架构是64位的, 那么对应的平台相关目录就是 <code>linux_amd64</code></p>
+<p>扩展: 代码包的另外一层含义: 该代码包的源码文件存在于 Github.com 网站的 labstack(User) 组的代码仓库 echo(Property) 中.</p>
 </blockquote>
+<p>归档文件的相对目录与pkg目录之间还有一级目录, 叫做平台相关目录. 平台相关目录的名称是由 <code>build</code> (也称”构建”)的目标操作系统、下划线和目标计算架构的代号组成的。</p>
+<p>比如,构建某个代码包时的目标系统是Linux,目标计算架构是64位的, 那么对应的平台相关目录就是 <code>linux_amd64</code></p>
 <p>因此,上述代码包的归档文件就会被放置在当前工作区的子目录 <code>pkg/linux_amd64/github.com/labstack</code>中</p>
 <p><img src="http://new.bengder.cc/img/1-1.png" alt="代码包归档文件放置在当前工作区的子目录 图示 1-1"></p>
 <h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
