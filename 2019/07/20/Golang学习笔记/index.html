@@ -182,9 +182,8 @@
 <p>一个代码包中可以包含任意个以”.go”为扩展名的源文件, 这些源文件都要被声明属于同一个代码包</p>
 <p>代码包的名称一般会与源码文件所在的目录同名. 如果不同名, 那么在构建、安装的过程中会以代码包名称为准.</p>
 <p>每个代码包都会有导入路径. 代码包的导入路径是其他代码在使用该包中的程序实体时, 需要引入的路径. 在实际使用程序实体之前, 我们必须先导入其所在的代码包. 具体方式就是 <code>import</code> 该代码包的导入路径, For example: </p>
-<blockquote>
-<p>impoer “github.com/labstack/echo”</p>
-</blockquote>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/labstack/echo"</span></span><br></pre></td></tr></table></figure>
+
 <p>在工作区中, 一个代码包的导入路径实际上就是<code>src</code>子目录, 到该包的实际存储位置的相对路径.</p>
 
         
