@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang-学习笔记"><span class="toc-text">Golang 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go常用命令简介"><span class="toc-text">Go常用命令简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的25个内置关键字"><span class="toc-text">Go 的25个内置关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的注释方式"><span class="toc-text">Go 的注释方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区和PATH"><span class="toc-text">工作区和PATH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Go语言源码的组织方式"><span class="toc-text">Go语言源码的组织方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#源码安装后的结果"><span class="toc-text">源码安装后的结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#理解构建和安装Go程序的过程"><span class="toc-text">理解构建和安装Go程序的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-程序的一般结构"><span class="toc-text">Go 程序的一般结构</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang-学习笔记"><span class="toc-text">Golang 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go常用命令简介"><span class="toc-text">Go常用命令简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的25个内置关键字"><span class="toc-text">Go 的25个内置关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的注释方式"><span class="toc-text">Go 的注释方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区和PATH"><span class="toc-text">工作区和PATH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Go语言源码的组织方式"><span class="toc-text">Go语言源码的组织方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#源码安装后的结果"><span class="toc-text">源码安装后的结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#理解构建和安装Go程序的过程"><span class="toc-text">理解构建和安装Go程序的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拓展"><span class="toc-text">拓展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#go-build-命令一些可选项的用途和用法"><span class="toc-text">go build 命令一些可选项的用途和用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何确定哪些包被编译了"><span class="toc-text">如何确定哪些包被编译了?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#go-get-常用标记"><span class="toc-text">go get 常用标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义导入路径-导入注释"><span class="toc-text">自定义导入路径 (导入注释)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-程序的一般结构"><span class="toc-text">Go 程序的一般结构</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -201,7 +201,32 @@
 <p>如果构建的是 <code>命令源码</code> 文件, 那么操作后产生的结果会被搬运到源码文件所在的目录中. </p>
 <p>安装操作会先执行构建, 然后还会进行链接操作, 并且把结果文件搬运到指定目录.</p>
 <p>进一步说, 如果安装的库源码文件, 那么结果文件会被搬运到它所在工作区的pkg目录下的某个子目录中; 如果安装的是命令源码文件, 那么结果文件会被搬运到它所在工作区的bin目录中, 或者环境变量GOBIN指向的目录中.</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
+<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="go-build-命令一些可选项的用途和用法"><a href="#go-build-命令一些可选项的用途和用法" class="headerlink" title="go build 命令一些可选项的用途和用法"></a>go build 命令一些可选项的用途和用法</h4><ul>
+<li><code>-a</code> 在使用go build命令时添加标记 <code>-a</code>, 强制编译目标代码包所依赖的代码包</li>
+<li><code>-i</code> 安装归档文件使用标记 <code>-i</code></li>
+</ul>
+<h4 id="如何确定哪些包被编译了"><a href="#如何确定哪些包被编译了" class="headerlink" title="如何确定哪些包被编译了?"></a>如何确定哪些包被编译了?</h4><ol>
+<li>运行 go build 命令时加入标记<code>-x</code>,可以查看go build命令具体执行了哪些操作, 加入标记 <code>-n</code>, 可以只查看具体操作而不执行.</li>
+<li>运行 go build 命令时加入标记<code>-v</code>,可以查看go build命令编译的代码包的名称,与<code>-a</code>标记搭配使用(推荐).</li>
+</ol>
+<h4 id="go-get-常用标记"><a href="#go-get-常用标记" class="headerlink" title="go get 常用标记"></a>go get 常用标记</h4><p>该命令会自动从一些代码仓库下载目标代码包,并把它们安装到GOPATH包含的<code>第一个工作区</code>的相应目录中. 如果存在环境变量GOBIN, 那么仅包含命令源码文件的代码包会被安装到GOBIN指向的那个目录</p>
+<p>最常用的几个标记:</p>
+<ul>
+<li><code>-u</code>          下载并安装代码包, 不论工作区中是否已存在它们</li>
+<li><code>-d</code>          只下载代码包, 不安装代码包</li>
+<li><code>-fix</code>        在下载代码包后先运行一个用于根据当前Go语言版本修正代码的工具, 再安装代码包</li>
+<li><code>-t</code>          同事下载测试所需的代码包</li>
+<li><code>-insecure</code>   允许通过非安全的网络协议下载和安装代码包. HTTP就是这样的协议</li>
+</ul>
+<h4 id="自定义导入路径-导入注释"><a href="#自定义导入路径-导入注释" class="headerlink" title="自定义导入路径 (导入注释)"></a>自定义导入路径 (导入注释)</h4><p>出于某种目的变更存储源码的代码仓库或者代码包的相对路径, 为了让代码包的远程导入路径不受此类变更的影响, 我们应该使用自定义的代码包导入路径.</p>
+<p>自定义的方法是: 在该代码包中的库源码文件的包生命语句的右边加入导入注释: </p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">package</span> semaphore // <span class="keyword">import</span> <span class="string">"golang.org/x/sync/semaphore"</span></span><br></pre></td></tr></table></figure>
+
+<p>这个代码包原本的完整导入路径是<code>github.com/golang/sync/semaphore</code> , 这与实际存储它的网络地址对应的. 该代码包的源码实际存在Github网站的 golang 组的 sync 代码仓库的 semaphore 目录下. 而加入导入注释之后, 用一下命令即可下载并安装该代码包</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> golang.org/<span class="keyword">x</span>/<span class="keyword">sync</span>/semaphore</span><br></pre></td></tr></table></figure>
+
+<p>而Go语言官网 golang.org 下的路径 /x/sync/semaphore 并不是存放 semaphore 包的真实地址,我们称之为代码包的自定义导入路径</p>
+<h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
 <li>Go程序是通过 <strong>package</strong> 来组织的</li>
 <li>只有package名称为main的包可以包含main函数</li>
 <li>一个可执行程序 <strong>有且仅有</strong> 一个main包</li>
