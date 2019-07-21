@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang-学习笔记"><span class="toc-text">Golang 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go常用命令简介"><span class="toc-text">Go常用命令简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的25个内置关键字"><span class="toc-text">Go 的25个内置关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的注释方式"><span class="toc-text">Go 的注释方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-程序的一般结构"><span class="toc-text">Go 程序的一般结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区和PATH"><span class="toc-text">工作区和PATH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#知识扩展"><span class="toc-text">知识扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Go语言源码的组织方式"><span class="toc-text">Go语言源码的组织方式</span></a></li></ol></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang-学习笔记"><span class="toc-text">Golang 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go常用命令简介"><span class="toc-text">Go常用命令简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的25个内置关键字"><span class="toc-text">Go 的25个内置关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的注释方式"><span class="toc-text">Go 的注释方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区和PATH"><span class="toc-text">工作区和PATH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#知识扩展"><span class="toc-text">知识扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Go语言源码的组织方式"><span class="toc-text">Go语言源码的组织方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-程序的一般结构"><span class="toc-text">Go 程序的一般结构</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -158,16 +158,6 @@
 <li>// 单行注释</li>
 <li>/* */多行注释</li>
 </ul>
-<h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
-<li>Go程序是通过 <strong>package</strong> 来组织的</li>
-<li>只有package名称为main的包可以包含main函数</li>
-<li>一个可执行程序 <strong>有且仅有</strong> 一个main包</li>
-<li>通过关键字<strong>import</strong>导入非main包的其它包</li>
-<li>通过关键字<strong>const</strong>来进行 <strong>常量</strong> 的定义</li>
-<li>通过在函数体外部使用<strong>var</strong>关键字来进行全局变量的声明与赋值</li>
-<li>使用<strong>type</strong>关键字来进行结构(<strong>struct</strong>)或者接口(<strong>interface</strong>)的声明</li>
-<li>通过<strong>func</strong>关键字来进行函数的声明</li>
-</ul>
 <h2 id="工作区和PATH"><a href="#工作区和PATH" class="headerlink" title="工作区和PATH"></a>工作区和PATH</h2><p>安装后我们需要配置3个环境变量 <code>GOROOT</code> <code>GOPATH</code> <code>GOBIN</code></p>
 <ul>
 <li>GOROOT: Go语言安装根目录的路径,也就是Go的安装路径</li>
@@ -185,6 +175,17 @@
 <figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/labstack/echo"</span></span><br></pre></td></tr></table></figure>
 
 <p>在工作区中, 一个代码包的导入路径实际上就是<code>src</code>子目录, 到该包的实际存储位置的相对路径.</p>
+<p>所以说, Go语言源码的组织方式就是以环境变量GOPATH、工作区，src目录和代码包为主线。一般情况下，Go语言的源码文件都需要被存放在环境变量GOPATH包含的某个工作区（目录）中的src目录下的某个代码包（目录）中.</p>
+<h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
+<li>Go程序是通过 <strong>package</strong> 来组织的</li>
+<li>只有package名称为main的包可以包含main函数</li>
+<li>一个可执行程序 <strong>有且仅有</strong> 一个main包</li>
+<li>通过关键字<strong>import</strong>导入非main包的其它包</li>
+<li>通过关键字<strong>const</strong>来进行 <strong>常量</strong> 的定义</li>
+<li>通过在函数体外部使用<strong>var</strong>关键字来进行全局变量的声明与赋值</li>
+<li>使用<strong>type</strong>关键字来进行结构(<strong>struct</strong>)或者接口(<strong>interface</strong>)的声明</li>
+<li>通过<strong>func</strong>关键字来进行函数的声明</li>
+</ul>
 
         
         <br />
