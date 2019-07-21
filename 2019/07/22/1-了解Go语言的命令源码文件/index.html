@@ -193,7 +193,7 @@
 <h2 id="创建私有命令参数容器"><a href="#创建私有命令参数容器" class="headerlink" title="创建私有命令参数容器"></a>创建私有命令参数容器</h2><p>我们在函数外再添加一个变量声明</p>
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var cmdLine = <span class="built_in">flag</span>.NewFlagSet(<span class="string">"Question"</span>,<span class="built_in">flag</span>.ExitOnError)</span><br></pre></td></tr></table></figure>
 
-<p>然后我们把对falg.StringVar的调用替换为 cmdLine.StringVar调用, 再把 flag.Parse()替换为cmdLine.Parse(os.Args[1:])</p>
+<p>然后我们把对flag.StringVar的调用替换为 cmdLine.StringVar调用, 再把 flag.Parse()替换为cmdLine.Parse(os.Args[1:])</p>
 <p><strong>其中 os.Args[1:]指的就是我们给定的那些命令参数. 这样做就完全脱离了flag.CommandLine. 这样做的好处是更灵活地定制了命令参数容器. 更重要的是, 定制完全不会影响到全局变量flag.CommandLine</strong></p>
 
         
