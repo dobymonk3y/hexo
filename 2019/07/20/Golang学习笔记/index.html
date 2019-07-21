@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang-学习笔记"><span class="toc-text">Golang 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go常用命令简介"><span class="toc-text">Go常用命令简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的25个内置关键字"><span class="toc-text">Go 的25个内置关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的注释方式"><span class="toc-text">Go 的注释方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区和PATH"><span class="toc-text">工作区和PATH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#知识扩展"><span class="toc-text">知识扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Go语言源码的组织方式"><span class="toc-text">Go语言源码的组织方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#源码安装后的结果"><span class="toc-text">源码安装后的结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-程序的一般结构"><span class="toc-text">Go 程序的一般结构</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang-学习笔记"><span class="toc-text">Golang 学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go常用命令简介"><span class="toc-text">Go常用命令简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的25个内置关键字"><span class="toc-text">Go 的25个内置关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-的注释方式"><span class="toc-text">Go 的注释方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区和PATH"><span class="toc-text">工作区和PATH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#知识扩展"><span class="toc-text">知识扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Go语言源码的组织方式"><span class="toc-text">Go语言源码的组织方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#源码安装后的结果"><span class="toc-text">源码安装后的结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#理解构建和安装Go程序的过程"><span class="toc-text">理解构建和安装Go程序的过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-程序的一般结构"><span class="toc-text">Go 程序的一般结构</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -196,7 +196,12 @@
 <p>比如,构建某个代码包时的目标系统是Linux,目标计算架构是64位的, 那么对应的平台相关目录就是 <code>linux_amd64</code></p>
 <p>因此,上述代码包的归档文件就会被放置在当前工作区的子目录 <code>pkg/linux_amd64/github.com/labstack</code>中</p>
 <p><img src="http://new.bengder.cc/img/1-1.png" alt="代码包归档文件放置在当前工作区的子目录 图示 1-1"></p>
-<h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
+<h4 id="理解构建和安装Go程序的过程"><a href="#理解构建和安装Go程序的过程" class="headerlink" title="理解构建和安装Go程序的过程"></a>理解构建和安装Go程序的过程</h4><p>构建使用命令 <code>go build</code>, 安装使用命令 <code>go install</code> . 构建和安装代码包的时候都会执行编译、打包等操作. 并且这些操作生成的任何文件都会先被保存到某个临时的目录中.</p>
+<p>如果构建的是 <code>库源码</code> 文件, 那么操作后产生的结果文件只会存在于临时目录中. 这里的<code>构建</code>的主要意义在于检查和验证. </p>
+<p>如果构建的是 <code>命令源码</code> 文件, 那么操作后产生的结果会被搬运到源码文件所在的目录中. </p>
+<p>安装操作会先执行构建, 然后还会进行链接操作, 并且把结果文件搬运到指定目录.</p>
+<p>进一步说, 如果安装的库源码文件, 那么结果文件会被搬运到它所在工作区的pkg目录下的某个子目录中; 如果安装的是命令源码文件, 那么结果文件会被搬运到它所在工作区的bin目录中, 或者环境变量GOBIN指向的目录中.</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h2 id="Go-程序的一般结构"><a href="#Go-程序的一般结构" class="headerlink" title="Go 程序的一般结构"></a>Go 程序的一般结构</h2><ul>
 <li>Go程序是通过 <strong>package</strong> 来组织的</li>
 <li>只有package名称为main的包可以包含main函数</li>
 <li>一个可执行程序 <strong>有且仅有</strong> 一个main包</li>
