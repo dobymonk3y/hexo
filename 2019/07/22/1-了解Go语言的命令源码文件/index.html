@@ -186,7 +186,7 @@
 <p>执行 <code>go run demo3.go --help</code> 后你会发现显示结果换了另外一种效果.</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Usage of Question!</span><br><span class="line">  -name string</span><br><span class="line">        The greeting object. (default <span class="string">"everyone"</span>)</span><br><span class="line">panic: flag: help requested</span><br><span class="line"></span><br><span class="line">goroutine <span class="number">1</span> [running]:</span><br><span class="line">flag.(*FlagSet).Parse(<span class="number">0</span>xc000098060, <span class="number">0</span>xc00005a430, <span class="number">0</span>x1, <span class="number">0</span>x1, <span class="number">0</span>xc00008df88, <span class="number">0</span>x405466)</span><br><span class="line">        C:<span class="regexp">/Go/</span>src<span class="regexp">/flag/</span>flag.go:<span class="number">983</span> +<span class="number">0</span>xffflag.Parse(...)</span><br><span class="line">        C:<span class="regexp">/Go/</span>src<span class="regexp">/flag/</span>flag.go:<span class="number">998</span></span><br><span class="line">main.main()</span><br><span class="line">        E:<span class="regexp">/Users/</span>frankie<span class="regexp">/go/</span>src<span class="regexp">/demo/</span>demo1.go:<span class="number">21</span> +<span class="number">0</span>x7f</span><br><span class="line"><span class="keyword">exit</span> status <span class="number">2</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>++flag.ExitOnError 与 flag.PanicOnError都是预定义在flag包中的常量++</strong></p>
+<p><strong>flag.ExitOnError 与 flag.PanicOnError都是预定义在flag包中的常量</strong></p>
 <p>flag.ExitOnErr的含义是,告诉命令参数容器, 当命令后跟<code>--help</code>或者参数设置不正确时,打印命令参数使用说明后以状态码2结束当前程序</p>
 <p>状态码2代表用户错误地使用了命令, 而flag.PanicOnError与之的区别是最后抛出<code>运行时恐慌</code></p>
 <p>上述两种情况都会在调用flag.Parse函数时触发.</p>
@@ -194,7 +194,7 @@
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var cmdLine = <span class="built_in">flag</span>.NewFlagSet(<span class="string">"Question"</span>,<span class="built_in">flag</span>.ExitOnError)</span><br></pre></td></tr></table></figure>
 
 <p>然后我们把对falg.StringVar的调用替换为 cmdLine.StringVar调用, 再把 flag.Parse()替换为cmdLine.Parse(os.Args[1:])</p>
-<p><strong>++其中 os.Args[1:]指的就是我们给定的那些命令参数. 这样做就完全脱离了flag.CommandLine. 这样做的好处是更灵活地定制了命令参数容器. 更重要的是, 定制完全不会影响到全局变量flag.CommandLine++</strong></p>
+<p><strong>其中 os.Args[1:]指的就是我们给定的那些命令参数. 这样做就完全脱离了flag.CommandLine. 这样做的好处是更灵活地定制了命令参数容器. 更重要的是, 定制完全不会影响到全局变量flag.CommandLine</strong></p>
 
         
         <br />
